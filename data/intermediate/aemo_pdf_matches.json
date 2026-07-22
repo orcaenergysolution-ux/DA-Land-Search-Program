@@ -1,0 +1,1235 @@
+{
+  "nem_regional_boundaries.pdf": {
+    "state": "ALL",
+    "matches": [
+      {
+        "label": "Barron Gorge",
+        "x": 948.2422162500001,
+        "y": 173.56359999999995,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Barron Gorge",
+        "matched_region": "QLD1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Tableland Mill",
+        "x": 937.47830475,
+        "y": 184.03240000000005,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Tableland Mill",
+        "matched_region": "QLD1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Windy Hill",
+        "x": 966.9563003750002,
+        "y": 219.5371,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Windy Hill",
+        "matched_region": "QLD1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Kareeya",
+        "x": 963.3908462500001,
+        "y": 238.34490000000005,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Kareeya",
+        "matched_region": "QLD1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Victoria Mill",
+        "x": 1022.8269877800001,
+        "y": 303.8639000000003,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Victoria Mill",
+        "matched_region": "QLD1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Yabulu South",
+        "x": 1056.79819,
+        "y": 337.50549999999987,
+        "colour": "#5c5d60",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Yabulu South BESS",
+        "matched_region": "QLD1",
+        "matched_stage": "Application",
+        "match_type": "core"
+      },
+      {
+        "label": "Mt Stuart",
+        "x": 1073.0961887499998,
+        "y": 355.36360000000013,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Mt Stuart",
+        "matched_region": "QLD1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Invicta Mill",
+        "x": 1084.40936125,
+        "y": 371.29410000000007,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Invicta Mill",
+        "matched_region": "QLD1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Ross River",
+        "x": 1027.95289,
+        "y": 374.6844000000001,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Ross River Solar Farm",
+        "matched_region": "QLD1",
+        "matched_stage": "Existing",
+        "match_type": "core"
+      },
+      {
+        "label": "Pioneer Sugar Mill",
+        "x": 1109.1025037499999,
+        "y": 378.43129999999996,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Pioneer Sugar Mill",
+        "matched_region": "QLD1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Stony Creek",
+        "x": 1103.9187,
+        "y": 478.66340000000037,
+        "colour": "#5c5d60",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Stony Creek Wind Farm",
+        "matched_region": "QLD1",
+        "matched_stage": "Application",
+        "match_type": "core"
+      },
+      {
+        "label": "Gladstone",
+        "x": 1371.4593325,
+        "y": 689.0152999999998,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Gladstone",
+        "matched_region": "QLD1",
+        "matched_stage": "Retiring",
+        "match_type": "exact"
+      },
+      {
+        "label": "Clayton",
+        "x": 1443.8097,
+        "y": 783.3145999999999,
+        "colour": "#5c5d60",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Clayton",
+        "matched_region": "VIC1",
+        "matched_stage": "Application",
+        "match_type": "exact"
+      },
+      {
+        "label": "Susan River",
+        "x": 1475.79826,
+        "y": 812.9964,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Susan River Solar Farm",
+        "matched_region": "QLD1",
+        "matched_stage": "Existing",
+        "match_type": "core"
+      },
+      {
+        "label": "Roma",
+        "x": 1178.92555,
+        "y": 896.3972999999999,
+        "colour": "#5c5d60",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Roma",
+        "matched_region": "QLD1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Coopers Gap",
+        "x": 1363.69856625,
+        "y": 903.3304999999998,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Coopers Gap Wind Farm",
+        "matched_region": "QLD1",
+        "matched_stage": "Existing",
+        "match_type": "core"
+      },
+      {
+        "label": "Roma",
+        "x": 1195.077225,
+        "y": 907.8814000000002,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Roma",
+        "matched_region": "QLD1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Tarong North",
+        "x": 1417.55401975,
+        "y": 912.2634,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Tarong North",
+        "matched_region": "QLD1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Tarong",
+        "x": 1407.950790625,
+        "y": 929.5044,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Tarong",
+        "matched_region": "QLD1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Braemar",
+        "x": 1353.26322875,
+        "y": 935.4884999999999,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Braemar",
+        "matched_region": "QLD1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Western Downs",
+        "x": 1298.0381905000004,
+        "y": 955.9301,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Western Downs Battery Project",
+        "matched_region": "QLD1",
+        "matched_stage": "Application",
+        "match_type": "core"
+      },
+      {
+        "label": "Wivenhoe",
+        "x": 1439.5767091250002,
+        "y": 957.0431000000001,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Wivenhoe",
+        "matched_region": "QLD1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Darling Downs",
+        "x": 1301.55916375,
+        "y": 962.8305,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Darling Downs",
+        "matched_region": "QLD1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Darling Downs",
+        "x": 1304.95117125,
+        "y": 968.4024999999999,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Darling Downs",
+        "matched_region": "QLD1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "South South South South Keswick Keswick Keswick Keswick",
+        "x": 1193.8628612500002,
+        "y": 1357.4171999999999,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "South Keswick Solar Farm",
+        "matched_region": "NSW1",
+        "matched_stage": "Existing",
+        "match_type": "core"
+      },
+      {
+        "label": "Crudine Crudine Crudine Crudine Ridge Ridge Ridge Ridge",
+        "x": 1241.7459884,
+        "y": 1402.4211,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Crudine Ridge Wind Farm",
+        "matched_region": "NSW1",
+        "matched_stage": "Existing",
+        "match_type": "core"
+      },
+      {
+        "label": "Flyers Flyers Flyers Flyers Creek Creek Creek Creek",
+        "x": 1198.26348805,
+        "y": 1455.9551999999999,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Flyers Creek Wind Farm",
+        "matched_region": "NSW1",
+        "matched_stage": "Existing",
+        "match_type": "core"
+      },
+      {
+        "label": "Angaston",
+        "x": 524.2207087499999,
+        "y": 1540.2263,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Angaston",
+        "matched_region": "SA1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Port Lincoln",
+        "x": 301.04959999999994,
+        "y": 1555.2229,
+        "colour": "#5c5d60",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Port Lincoln GT",
+        "matched_region": "SA1",
+        "matched_stage": "Retiring",
+        "match_type": "core"
+      },
+      {
+        "label": "Darlington Darlington Darlington Darlington Point Point Point Point",
+        "x": 970.0503000000001,
+        "y": 1557.6417999999999,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Darlington Point Solar Farm",
+        "matched_region": "NSW1",
+        "matched_stage": "Existing",
+        "match_type": "core"
+      },
+      {
+        "label": "Lonsdale",
+        "x": 455.4139125,
+        "y": 1591.3946999999998,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Lonsdale",
+        "matched_region": "SA1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Port Stanvac",
+        "x": 447.38978625000016,
+        "y": 1596.9596999999999,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Port Stanvac 1",
+        "matched_region": "SA1",
+        "matched_stage": "Existing",
+        "match_type": "core"
+      },
+      {
+        "label": "Wattle Point",
+        "x": 401.78296975,
+        "y": 1599.2557000000002,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Wattle Point",
+        "matched_region": "SA1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Starfish Hill",
+        "x": 461.42207375000004,
+        "y": 1636.6357,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Starfish Hill",
+        "matched_region": "SA1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Upper Upper Upper Upper Tumut Tumut Tumut Tumut",
+        "x": 1156.9553984999998,
+        "y": 1668.0765,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Upper Tumut",
+        "matched_region": "NSW1",
+        "matched_stage": "Existing",
+        "match_type": "core"
+      },
+      {
+        "label": "6 Snapper Point",
+        "x": 327.86993375,
+        "y": 1681.4123,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Snapper Point Power Station",
+        "matched_region": "SA1",
+        "matched_stage": "Existing",
+        "match_type": "core"
+      },
+      {
+        "label": "Glenrowan West",
+        "x": 998.15268937,
+        "y": 1691.7892,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Glenrowan West Solar Farm",
+        "matched_region": "VIC1",
+        "matched_stage": "Existing",
+        "match_type": "core"
+      },
+      {
+        "label": "Dartmouth",
+        "x": 1112.5878687499999,
+        "y": 1717.759,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Dartmouth",
+        "matched_region": "VIC1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Clover",
+        "x": 1086.1993699999998,
+        "y": 1731.1359,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Clover",
+        "matched_region": "VIC1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "West Kiewa",
+        "x": 1061.9961155,
+        "y": 1746.9474,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "West Kiewa",
+        "matched_region": "VIC1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Cherry Tree",
+        "x": 944.6503951249999,
+        "y": 1760.8928999999998,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Cherry Tree Wind Farm",
+        "matched_region": "VIC1",
+        "matched_stage": "Existing",
+        "match_type": "core"
+      },
+      {
+        "label": "Eildon",
+        "x": 997.51096,
+        "y": 1777.3898,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Eildon",
+        "matched_region": "VIC1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Waubra",
+        "x": 837.9038349999998,
+        "y": 1784.2917000000002,
+        "colour": "#5c5d60",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Waubra",
+        "matched_region": "VIC1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Challicum Hills",
+        "x": 772.6561662499998,
+        "y": 1790.8809,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Challicum Hills",
+        "matched_region": "VIC1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Snuggery",
+        "x": 593.2565650000001,
+        "y": 1808.2966999999999,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Snuggery",
+        "matched_region": "SA1",
+        "matched_stage": "Retiring",
+        "match_type": "exact"
+      },
+      {
+        "label": "Salt Creek",
+        "x": 765.13850375,
+        "y": 1807.4904,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Salt Creek Wind Farm",
+        "matched_region": "VIC1",
+        "matched_stage": "Existing",
+        "match_type": "core"
+      },
+      {
+        "label": "Canunda",
+        "x": 587.4036449999999,
+        "y": 1815.9983000000002,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Canunda",
+        "matched_region": "SA1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Bairnsdale",
+        "x": 1112.8538537499999,
+        "y": 1825.5958,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Bairnsdale",
+        "matched_region": "VIC1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Stockyard Hill",
+        "x": 799.85826625,
+        "y": 1831.1662000000001,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Stockyard Hill Wind Farm",
+        "matched_region": "VIC1",
+        "matched_stage": "Existing",
+        "match_type": "core"
+      },
+      {
+        "label": "LaTrobe Valley 2 3",
+        "x": 967.96405,
+        "y": 1833.9474,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "LaTrobe Valley BESS",
+        "matched_region": "VIC1",
+        "matched_stage": "Existing",
+        "match_type": "core"
+      },
+      {
+        "label": "Mortlake",
+        "x": 772.4941899999999,
+        "y": 1851.4845,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Mortlake",
+        "matched_region": "VIC1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Valley Power",
+        "x": 1047.658216375,
+        "y": 1861.8612,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Valley Power",
+        "matched_region": "VIC1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Toora",
+        "x": 1009.272904375,
+        "y": 1898.0932000000003,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Toora",
+        "matched_region": "VIC1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Bald Hills",
+        "x": 1000.6499262499999,
+        "y": 1913.6838,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Bald Hills Wind Farm",
+        "matched_region": "VIC1",
+        "matched_stage": "Existing",
+        "match_type": "core"
+      },
+      {
+        "label": "Laverton North",
+        "x": 871.2945910000001,
+        "y": 1924.913,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Laverton North",
+        "matched_region": "VIC1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Port Latta",
+        "x": 963.8065999999999,
+        "y": 2098.9688,
+        "colour": "#5c5d60",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Port Latta Wind Farm",
+        "matched_region": "TAS1",
+        "matched_stage": "Anticipated",
+        "match_type": "core"
+      },
+      {
+        "label": "George Town",
+        "x": 1073.1886075,
+        "y": 2107.2189,
+        "colour": "#7d002e",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "George Town Wind Farm",
+        "matched_region": "TAS1",
+        "matched_stage": "Application",
+        "match_type": "core"
+      },
+      {
+        "label": "Paloona",
+        "x": 995.6758950000001,
+        "y": 2137.51,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Paloona",
+        "matched_region": "TAS1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Devils Gate",
+        "x": 992.3445337500001,
+        "y": 2146.309,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Devils Gate",
+        "matched_region": "TAS1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Trevallyn",
+        "x": 1081.981155125,
+        "y": 2146.316,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Trevallyn",
+        "matched_region": "TAS1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Cethana",
+        "x": 1013.9262337500002,
+        "y": 2160.449,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Cethana",
+        "matched_region": "TAS1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Mackintosh",
+        "x": 953.0123037500001,
+        "y": 2170.809,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Mackintosh",
+        "matched_region": "TAS1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Reece",
+        "x": 923.1471625000001,
+        "y": 2175.562,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Reece",
+        "matched_region": "TAS1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Fisher",
+        "x": 1021.8688012499999,
+        "y": 2175.121,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Fisher",
+        "matched_region": "TAS1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Bastyan",
+        "x": 980.5059675000002,
+        "y": 2182.87,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Bastyan",
+        "matched_region": "TAS1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Rowallan",
+        "x": 1020.938195,
+        "y": 2182.205,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Rowallan",
+        "matched_region": "TAS1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Granville Harbour",
+        "x": 905.9884562500001,
+        "y": 2186.174,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Granville Harbour Wind Farm",
+        "matched_region": "TAS1",
+        "matched_stage": "Existing",
+        "match_type": "core"
+      },
+      {
+        "label": "Cattle Hill",
+        "x": 1025.5640400000002,
+        "y": 2215.126,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Cattle Hill Wind Farm",
+        "matched_region": "TAS1",
+        "matched_stage": "Existing",
+        "match_type": "core"
+      },
+      {
+        "label": "John Butters",
+        "x": 943.5724012500002,
+        "y": 2217.639,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "John Butters",
+        "matched_region": "TAS1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Lake Echo",
+        "x": 1048.8522000000003,
+        "y": 2226.851,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Lake Echo",
+        "matched_region": "TAS1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Tungatinah",
+        "x": 1041.4460381250003,
+        "y": 2234.803,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Tungatinah",
+        "matched_region": "TAS1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Meadowbank",
+        "x": 1030.15825875,
+        "y": 2261.7384,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Meadowbank",
+        "matched_region": "TAS1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      },
+      {
+        "label": "Gordon",
+        "x": 977.2872762499999,
+        "y": 2275.4444,
+        "colour": "#000000",
+        "page_w": 1669.6,
+        "page_h": 2383.0,
+        "matched_site": "Gordon",
+        "matched_region": "TAS1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      }
+    ],
+    "colour_counts": [
+      [
+        "#5c5d60",
+        380
+      ],
+      [
+        "#000000",
+        318
+      ],
+      [
+        "#454648",
+        13
+      ],
+      [
+        "#5d5d60",
+        7
+      ],
+      [
+        "#1d1d1b",
+        7
+      ],
+      [
+        "#7d002e",
+        4
+      ],
+      [
+        "#b31219",
+        3
+      ],
+      [
+        "#efe08b",
+        1
+      ],
+      [
+        "#f7b279",
+        1
+      ],
+      [
+        "#b4c1a4",
+        1
+      ],
+      [
+        "#eda6a7",
+        1
+      ],
+      [
+        "#a2b3cc",
+        1
+      ],
+      [
+        "#bdafc6",
+        1
+      ]
+    ]
+  },
+  "nsw-map.pdf": {
+    "state": "NSW",
+    "matches": [
+      {
+        "label": "Kemps Creek",
+        "x": 669.5026500000001,
+        "y": 485.45600000000013,
+        "colour": "#5c5d60",
+        "page_w": 932.316,
+        "page_h": 733.559,
+        "matched_site": "Kemps Creek BESS",
+        "matched_region": "NSW1",
+        "matched_stage": "Application",
+        "match_type": "core"
+      }
+    ],
+    "colour_counts": [
+      [
+        "#000000",
+        148
+      ],
+      [
+        "#5c5d60",
+        120
+      ],
+      [
+        "#231f20",
+        23
+      ],
+      [
+        "#454648",
+        5
+      ],
+      [
+        "#7d002e",
+        1
+      ]
+    ]
+  },
+  "qld-map.pdf": {
+    "state": "QLD",
+    "matches": [
+      {
+        "label": "Yabulu South",
+        "x": 452.50899000000004,
+        "y": 276.9321,
+        "colour": "#5c5d60",
+        "page_w": 949.266,
+        "page_h": 1065.47,
+        "matched_site": "Yabulu South BESS",
+        "matched_region": "QLD1",
+        "matched_stage": "Application",
+        "match_type": "core"
+      },
+      {
+        "label": "Stony Creek",
+        "x": 499.6252000000001,
+        "y": 418.0816000000002,
+        "colour": "#5c5d60",
+        "page_w": 949.266,
+        "page_h": 1065.47,
+        "matched_site": "Stony Creek Wind Farm",
+        "matched_region": "QLD1",
+        "matched_stage": "Application",
+        "match_type": "core"
+      },
+      {
+        "label": "Clayton",
+        "x": 839.5166999999999,
+        "y": 722.7329000000001,
+        "colour": "#5c5d60",
+        "page_w": 949.266,
+        "page_h": 1065.47,
+        "matched_site": "Clayton",
+        "matched_region": "VIC1",
+        "matched_stage": "Application",
+        "match_type": "exact"
+      },
+      {
+        "label": "Roma",
+        "x": 574.62795,
+        "y": 835.8154999999999,
+        "colour": "#5c5d60",
+        "page_w": 949.266,
+        "page_h": 1065.47,
+        "matched_site": "Roma",
+        "matched_region": "QLD1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      }
+    ],
+    "colour_counts": [
+      [
+        "#5c5d60",
+        138
+      ],
+      [
+        "#000000",
+        137
+      ],
+      [
+        "#231f20",
+        19
+      ],
+      [
+        "#454648",
+        6
+      ],
+      [
+        "#7d002e",
+        2
+      ],
+      [
+        "#000100",
+        1
+      ]
+    ]
+  },
+  "sa-map.pdf": {
+    "state": "SA",
+    "matches": [],
+    "colour_counts": [
+      [
+        "#000000",
+        76
+      ],
+      [
+        "#5c5d60",
+        69
+      ],
+      [
+        "#231f20",
+        17
+      ],
+      [
+        "#5d5d60",
+        7
+      ],
+      [
+        "#7d002e",
+        2
+      ],
+      [
+        "#000100",
+        1
+      ],
+      [
+        "#1d1d1b",
+        1
+      ],
+      [
+        "#b31219",
+        1
+      ]
+    ]
+  },
+  "tas-map.pdf": {
+    "state": "TAS",
+    "matches": [
+      {
+        "label": "Port Latta",
+        "x": 130.71579999999994,
+        "y": 50.303399999999954,
+        "colour": "#5c5d60",
+        "page_w": 399.094,
+        "page_h": 321.065,
+        "matched_site": "Port Latta Wind Farm",
+        "matched_region": "TAS1",
+        "matched_stage": "Anticipated",
+        "match_type": "core"
+      },
+      {
+        "label": "George Town",
+        "x": 240.09780750000002,
+        "y": 58.55340000000001,
+        "colour": "#7d002e",
+        "page_w": 399.094,
+        "page_h": 321.065,
+        "matched_site": "George Town Wind Farm",
+        "matched_region": "TAS1",
+        "matched_stage": "Application",
+        "match_type": "core"
+      }
+    ],
+    "colour_counts": [
+      [
+        "#5c5d60",
+        38
+      ],
+      [
+        "#000000",
+        29
+      ],
+      [
+        "#231f20",
+        16
+      ],
+      [
+        "#7d002e",
+        2
+      ],
+      [
+        "#454648",
+        2
+      ],
+      [
+        "#000100",
+        2
+      ]
+    ]
+  },
+  "vic-map.pdf": {
+    "state": "VIC",
+    "matches": [
+      {
+        "label": "Kemps Creek",
+        "x": 666.93515,
+        "y": 7.494399999999928,
+        "colour": "#5c5d60",
+        "page_w": 656.163,
+        "page_h": 515.554,
+        "matched_site": "Kemps Creek BESS",
+        "matched_region": "NSW1",
+        "matched_stage": "Application",
+        "match_type": "core"
+      },
+      {
+        "label": "Waubra",
+        "x": 203.617235,
+        "y": 295.10159999999996,
+        "colour": "#5c5d60",
+        "page_w": 656.163,
+        "page_h": 515.554,
+        "matched_site": "Waubra",
+        "matched_region": "VIC1",
+        "matched_stage": "Existing",
+        "match_type": "exact"
+      }
+    ],
+    "colour_counts": [
+      [
+        "#000000",
+        117
+      ],
+      [
+        "#5c5d60",
+        89
+      ],
+      [
+        "#231f20",
+        21
+      ],
+      [
+        "#454648",
+        5
+      ],
+      [
+        "#000100",
+        3
+      ],
+      [
+        "#1d1d1b",
+        2
+      ],
+      [
+        "#7d002e",
+        2
+      ],
+      [
+        "#efe08b",
+        1
+      ],
+      [
+        "#f7b279",
+        1
+      ],
+      [
+        "#b4c1a4",
+        1
+      ],
+      [
+        "#eda6a7",
+        1
+      ],
+      [
+        "#a2b3cc",
+        1
+      ],
+      [
+        "#bdafc6",
+        1
+      ],
+      [
+        "#b31219",
+        1
+      ]
+    ]
+  }
+}

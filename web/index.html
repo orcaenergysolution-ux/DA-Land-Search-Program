@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transmission Line Property Finder</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#171d24; --line:#2a3540; --text:#e6edf3; --muted:#8b98a5;
+    --accent:#f59e0b; --accent2:#3b82f6; --ok:#22c55e; --warn:#ef4444;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f6f8fa; --panel:#fff; --line:#d8dee4; --text:#1f2328; --muted:#656d76; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+       font:15px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  header{padding:22px 28px;border-bottom:1px solid var(--line);background:var(--panel)}
+  h1{margin:0;font-size:20px}
+  header p{margin:4px 0 0;color:var(--muted);font-size:13px}
+  .wrap{max-width:1180px;margin:0 auto;padding:24px 28px 60px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+  fieldset{border:1px solid var(--line);border-radius:10px;padding:16px 18px 18px;
+           background:var(--panel);margin:0 0 18px}
+  legend{padding:0 8px;font-weight:600;font-size:13px;text-transform:uppercase;
+         letter-spacing:.5px;color:var(--accent)}
+  label{display:block;margin:12px 0 5px;font-size:13px;font-weight:600}
+  .hint{font-weight:400;color:var(--muted);font-size:12px;margin-top:3px}
+  select,input[type=text],input[type=number],textarea{
+    width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:7px;
+    background:var(--bg);color:var(--text);font-size:14px}
+  textarea{min-height:80px;font-family:ui-monospace,Consolas,monospace;font-size:13px}
+  .checks{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+  .checks label{display:flex;align-items:center;gap:6px;margin:0;font-weight:400;
+    background:var(--bg);border:1px solid var(--line);padding:6px 11px;border-radius:20px;
+    cursor:pointer;font-size:13px}
+  .checks input{margin:0}
+  .costbox{margin-top:14px;padding:12px 14px;border-radius:8px;
+    background:rgba(245,158,11,.12);border:1px solid var(--accent);font-size:14px}
+  .costbox b{color:var(--accent)}
+  button{background:var(--accent2);color:#fff;border:0;border-radius:8px;
+    padding:13px 26px;font-size:15px;font-weight:600;cursor:pointer}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  #logbox{background:#0b0f14;color:#9fb1c1;border-radius:8px;padding:14px;
+    font:12px/1.6 ui-monospace,Consolas,monospace;max-height:220px;overflow:auto;
+    white-space:pre-wrap;border:1px solid var(--line)}
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px}
+  th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left}
+  th{background:var(--panel);position:sticky;top:0;font-size:12px;text-transform:uppercase;
+     letter-spacing:.4px;color:var(--muted)}
+  tbody tr:hover{background:rgba(59,130,246,.08)}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  .tag{background:rgba(59,130,246,.15);padding:2px 8px;border-radius:12px;font-size:12px}
+  .close{color:var(--ok);font-weight:700}
+  a{color:var(--accent2)}
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+  .status{margin:14px 0;padding:10px 14px;border-radius:8px;font-size:14px}
+  .status.err{background:rgba(239,68,68,.15);border:1px solid var(--warn)}
+  .status.ok{background:rgba(34,197,94,.13);border:1px solid var(--ok)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>⚡ Transmission Line Property Finder</h1>
+  <p>Finds land for sale close to high-voltage power lines. Set your criteria and press Search.</p>
+</header>
+
+<div class="wrap">
+  <div class="grid">
+    <fieldset>
+      <legend>Search area</legend>
+      <label>State</label>
+      <select id="state"></select>
+      <div class="hint" id="townhint"></div>
+
+      <label>Power line voltage to search around</label>
+      <div class="checks" id="voltages"></div>
+      <div class="hint">66 kV is the default. Tick more to include other line types.</div>
+
+      <div id="townswrap">
+        <label>Which towns to search</label>
+        <select id="location_mode">
+          <option value="derived" selected>All towns along the power lines (recommended)</option>
+          <option value="custom">Only towns I list below</option>
+        </select>
+        <textarea id="custom_locations" placeholder="Gisborne:VIC, Kilmore:VIC, Romsey:VIC"
+          style="display:none;margin-top:8px"></textarea>
+        <div id="radiuswrap" style="display:none">
+          <label>How far around each town</label>
+          <select id="town_radius">
+            <option value="5">Within 5 km</option>
+            <option value="10" selected>Within 10 km (default)</option>
+            <option value="20">Within 20 km</option>
+            <option value="50">Within 50 km</option>
+          </select>
+        </div>
+        <div id="parcelareanote" class="hint" style="display:none">
+          Listing a few towns is the fastest way to search land parcels — it scans only
+          the power lines near those towns instead of the whole state.
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Property criteria</legend>
+      <label>Minimum land size</label>
+      <select id="min_land">
+        <option value="2000">2,000 m² (0.2 ha)</option>
+        <option value="5000">5,000 m² (0.5 ha)</option>
+        <option value="10000" selected>10,000 m² (1 hectare) — default</option>
+        <option value="20000">20,000 m² (2 ha)</option>
+        <option value="40000">40,000 m² (4 ha)</option>
+        <option value="100000">100,000 m² (10 ha)</option>
+        <option value="400000">400,000 m² (40 ha)</option>
+      </select>
+
+      <label>How many results to find</label>
+      <select id="max_results">
+        <option value="25">25 — quickest</option>
+        <option value="50">50</option>
+        <option value="100" selected>100 (default)</option>
+        <option value="250">250</option>
+        <option value="500">500</option>
+        <option value="0">No limit — find everything (slow)</option>
+      </select>
+      <div class="hint">The search stops as soon as it finds this many, then shows the
+        results. Keeps searches fast.</div>
+
+      <label>Maximum distance to the power line</label>
+      <select id="max_distance">
+        <option value="100">100 m — right next to the line</option>
+        <option value="200">200 m — very close</option>
+        <option value="300">300 m — close</option>
+        <option value="500" selected>500 m — nearby (default)</option>
+        <option value="1000">1,000 m — within 1 km</option>
+        <option value="2000">2,000 m — within 2 km</option>
+      </select>
+
+      <div id="listingonly">
+        <label>Property types</label>
+        <div class="checks" id="ptypes"></div>
+        <div class="hint">"Land" and "Rural" are cheapest to search and hold most big blocks.
+          Add "House" to include acreage that already has a home on it.</div>
+
+        <label>Listing type</label>
+        <select id="listing_type">
+          <option value="buy" selected>For sale (default)</option>
+          <option value="sold">Recently sold</option>
+          <option value="rent">For rent</option>
+        </select>
+
+        <div class="row2">
+          <div><label>Min price (optional)</label>
+            <input type="number" id="min_price" placeholder="any"></div>
+          <div><label>Max price (optional)</label>
+            <input type="number" id="max_price" placeholder="any"></div>
+        </div>
+      </div>
+      <div id="parcelcritnote" class="hint" style="display:none">
+        Property type, listing type and price do not apply — the cadastre covers every
+        block of land, whether or not it is for sale, so there is nothing to filter on.
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Neighbours (privacy / isolation)</legend>
+      <label>Maximum nearby buildings allowed</label>
+      <select id="max_neighbors">
+        <option value="-1" selected>Don't check — fastest (default)</option>
+        <option value="0">0 — completely isolated</option>
+        <option value="2">2 or fewer</option>
+        <option value="5">5 or fewer</option>
+        <option value="10">10 or fewer</option>
+        <option value="25">25 or fewer</option>
+      </select>
+      <div class="hint" style="color:var(--accent)">Checking neighbours uses a free public
+        map service that is often slow or busy. It can add several minutes, and some
+        results may come back unchecked. Turn it on only when you need it.</div>
+
+      <label>Area to check for neighbours</label>
+      <select id="neighbor_radius">
+        <option value="100">Within 100 m</option>
+        <option value="150" selected>Within 150 m (default)</option>
+        <option value="250">Within 250 m</option>
+        <option value="500">Within 500 m</option>
+      </select>
+      <div class="hint">Counts buildings around the property using free map data.
+        Adds about 1 second per matching property.</div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Data &amp; cost</legend>
+      <label>What to search</label>
+      <select id="source">
+        <option value="parcels" selected>All land parcels — FREE (includes off-market)</option>
+        <option value="scrape">Properties advertised for sale (uses paid credit)</option>
+        <option value="saved">Re-use previously downloaded listings (free)</option>
+      </select>
+      <div class="hint" id="srchint"></div>
+
+      <div id="parcelwrap">
+        <label>How much of the state to scan</label>
+        <select id="max_tiles">
+          <option value="100">Small area — fastest</option>
+          <option value="400" selected>Medium area (default)</option>
+          <option value="1200">Large area</option>
+          <option value="0">Entire state — slowest</option>
+        </select>
+        <div class="hint">Scans along the power lines. It usually stops early once it has
+          found the number of results you asked for, so this is just an upper limit.
+          Always free.</div>
+      </div>
+
+      <div id="savedwrap" style="display:none">
+        <label>Saved data file</label>
+        <select id="raw_file"></select>
+      </div>
+
+      <div id="scrapewrap">
+        <label>Maximum listings to fetch (controls cost)</label>
+        <select id="max_listings">
+          <option value="100">100 listings</option>
+          <option value="200" selected>200 listings (default)</option>
+          <option value="400">400 listings</option>
+          <option value="800">800 listings</option>
+          <option value="1500">1,500 listings</option>
+        </select>
+
+        <label>Listings per town</label>
+        <select id="max_pages">
+          <option value="1" selected>Limit each town (spreads budget widely) — default</option>
+          <option value="0">No limit per town</option>
+        </select>
+
+        <label>Include surrounding suburbs</label>
+        <select id="include_surrounding">
+          <option value="0" selected>No — cheaper, less duplication (default)</option>
+          <option value="1">Yes — wider net, costs more</option>
+        </select>
+      </div>
+
+      <div class="costbox" id="costbox"></div>
+    </fieldset>
+  </div>
+
+  <button id="run">🔎 Search properties</button>
+  <div id="status"></div>
+  <div id="logwrap" style="display:none;margin-top:14px">
+    <div id="logbox"></div>
+  </div>
+  <div id="results"></div>
+</div>
+
+<script>
+const VOLTAGES=[66,132,220,275,330,500];
+const PTYPES=[["land","Land"],["rural","Rural"],["house","House"],["townhouse","Townhouse"],
+              ["apartment","Apartment"],["villa","Villa"],["commercial","Commercial"],["other","Other"]];
+let CFG={usd_per_result:0.0047};
+
+function el(id){return document.getElementById(id);}
+
+// build checkbox groups with defaults ticked
+VOLTAGES.forEach(v=>{
+  el('voltages').insertAdjacentHTML('beforeend',
+    `<label><input type="checkbox" name="v" value="${v}" ${v===66?'checked':''}>${v} kV</label>`);
+});
+PTYPES.forEach(([v,t])=>{
+  const on=(v==='land'||v==='rural')?'checked':'';
+  el('ptypes').insertAdjacentHTML('beforeend',
+    `<label><input type="checkbox" name="pt" value="${v}" ${on}>${t}</label>`);
+});
+
+function checked(name){
+  return [...document.querySelectorAll(`input[name=${name}]:checked`)].map(i=>i.value);
+}
+
+function updateCost(){
+  const src = el('source').value;
+  const isParcels = src==='parcels';
+  el('savedwrap').style.display = src==='saved'?'block':'none';
+  el('scrapewrap').style.display = src==='scrape'?'block':'none';
+  el('parcelwrap').style.display = isParcels?'block':'none';
+  // Listing-only controls make no sense for the cadastre: parcels are not listings.
+  el('listingonly').style.display    = isParcels?'none':'block';
+  el('parcelcritnote').style.display = isParcels?'block':'none';
+  el('townswrap').style.display      = 'block';   // towns apply to both modes
+  el('parcelareanote').style.display = isParcels?'block':'none';
+  // radius only matters when limiting a parcel scan to named towns
+  el('radiuswrap').style.display =
+    (isParcels && el('location_mode').value==='custom') ? 'block' : 'none';
+  const HINT={
+    parcels:'Searches every block of land in the government cadastre — including land '+
+            'that is NOT for sale. Free, but returns many results: tighten the land size '+
+            'and distance to narrow it down.',
+    scrape:'Only properties currently advertised on the market. Small, targeted list — but costs credit.',
+    saved:'Re-filters listings already downloaded earlier. Instant and free.'};
+  el('srchint').textContent=HINT[src]||'';
+  if(src==='parcels'){
+    el('costbox').innerHTML='<b>Cost: $0.00</b> — Victorian Government open data. '+
+      'No API credit is used, search as often as you like.';
+    return;
+  }
+  if(src==='saved'){
+    el('costbox').innerHTML='<b>Cost: $0.00</b> — re-using listings already downloaded.';
+    return;
+  }
+  const n=+el('max_listings').value;
+  const est=(n*CFG.usd_per_result).toFixed(2);
+  el('costbox').innerHTML=`<b>Estimated cost: up to $${est}</b> for ${n.toLocaleString()} listings `+
+    `(about $${CFG.usd_per_result.toFixed(4)} each). You are only charged for listings actually found.`;
+}
+['source','max_listings'].forEach(id=>el(id).addEventListener('change',updateCost));
+el('location_mode').addEventListener('change',e=>{
+  el('custom_locations').style.display = e.target.value==='custom'?'block':'none';
+  updateCost();   // radius box depends on this too
+});
+
+function townHint(){
+  const st=el('state').value, n=(CFG.town_lists||{})[st];
+  el('townhint').textContent = n ? `${n} towns along the power lines in ${st} are on file.`
+    : `No town list for ${st} yet — use "Only towns I list below", or ask your developer to generate one.`;
+}
+el('state') && el('state').addEventListener('change',townHint);
+
+fetch('/api/config').then(r=>r.json()).then(c=>{
+  CFG=Object.assign(CFG,c);
+  c.states.forEach(s=>el('state').insertAdjacentHTML('beforeend',
+    `<option ${s==='VIC'?'selected':''}>${s}</option>`));
+  (c.raw_files||[]).forEach(f=>el('raw_file').insertAdjacentHTML('beforeend',
+    `<option value="${f}">${f}</option>`));
+  if(!c.has_token){
+    el('status').className='status err';
+    el('status').textContent='⚠ No Apify key found. You can still re-use saved listings, '+
+      'but fetching fresh ones needs a key in data/apify_token.txt';
+  }
+  townHint(); updateCost();
+});
+
+el('run').onclick=()=>{
+  const v=checked('v'), pt=checked('pt');
+  if(!v.length){alert('Pick at least one power line voltage.');return;}
+  if(!pt.length && el('source').value==='scrape'){alert('Pick at least one property type.');return;}
+  const body={
+    max_tiles:el('max_tiles').value, tile:0.02,
+    town_radius:el('town_radius').value,
+    max_results:el('max_results').value,
+    state:el('state').value, voltages:v, property_types:pt,
+    min_land:el('min_land').value, max_distance:el('max_distance').value,
+    max_neighbors:el('max_neighbors').value, neighbor_radius:el('neighbor_radius').value,
+    listing_type:el('listing_type').value, source:el('source').value,
+    raw_file:el('raw_file').value, max_listings:el('max_listings').value,
+    max_pages:el('max_pages').value,
+    include_surrounding:el('include_surrounding').value==='1',
+    min_price:el('min_price').value, max_price:el('max_price').value,
+    location_mode:el('location_mode').value, custom_locations:el('custom_locations').value
+  };
+  if(body.source==='scrape'){
+    const est=(+body.max_listings*CFG.usd_per_result).toFixed(2);
+    if(!confirm(`This will fetch up to ${body.max_listings} listings and may use about $${est} of credit.\n\nContinue?`))return;
+  }
+  if(body.source==='parcels' && body.max_tiles==='0'){
+    if(!confirm('Scanning the entire state takes about an hour (it is free).\n\nContinue?'))return;
+  }
+  el('run').disabled=true; el('results').innerHTML='';
+  el('status').className='status'; el('status').textContent='Searching…';
+  el('logwrap').style.display='block';
+  fetch('/api/run',{method:'POST',body:JSON.stringify(body)})
+    .then(r=>r.json()).then(()=>poll());
+};
+
+function poll(){
+  fetch('/api/status').then(r=>r.json()).then(s=>{
+    el('logbox').textContent=s.log.join('\n');
+    el('logbox').scrollTop=el('logbox').scrollHeight;
+    if(s.running){setTimeout(poll,1500);return;}
+    el('run').disabled=false;
+    if(s.error){el('status').className='status err';el('status').textContent='Error: '+s.error;return;}
+    el('status').className='status ok';
+    const noun = s.mode==='parcels' ? 'land parcels' : 'properties';
+    el('status').innerHTML=`Found <b>${s.results.length}</b> ${noun}. ${s.cost_note||''} `+
+      (s.files.csv?` &nbsp;<a href="/outputs/${s.files.csv}" download>Download CSV</a>
+        &nbsp;·&nbsp; <a href="/outputs/${s.files.md}" download>Download report</a>`:'');
+    if(s.mode==='parcels') renderParcels(s.results); else render(s.results);
+  });
+}
+
+function renderParcels(rows){
+  if(!rows.length){el('results').innerHTML='<p>No parcels matched. Try a larger distance, '+
+    'a smaller minimum land size, or a bigger scan area.</p>';return;}
+  let h='<div class="scroll"><table><thead><tr><th>#</th><th class="num">Area (m²)</th>'+
+    '<th class="num">Hectares</th><th class="num">Distance to line</th>'+
+    '<th class="num">Neighbours</th><th>Parcel ID (SPI)</th><th>Location</th></tr></thead><tbody>';
+  rows.forEach((r,i)=>{
+    const close=r.dist<=50?'close':'';
+    const ident=r.spi||((r.lot||r.plan)?('Lot '+(r.lot||'')+' '+(r.plan||'')):'—');
+    const gmap=`https://www.google.com/maps/search/?api=1&query=${r.lat.toFixed(6)},${r.lon.toFixed(6)}`;
+    h+=`<tr><td>${i+1}</td>`+
+       `<td class="num">${Math.round(r.area).toLocaleString()}</td>`+
+       `<td class="num">${(r.area/10000).toFixed(2)}</td>`+
+       `<td class="num ${close}">${Math.round(r.dist)} m</td>`+
+       `<td class="num">${r.neighbours===null?'—':r.neighbours}</td>`+
+       `<td><span class="tag">${ident}</span></td>`+
+       `<td><a href="${gmap}" target="_blank" rel="noopener">View on map ↗</a></td></tr>`;
+  });
+  el('results').innerHTML=h+'</tbody></table></div>';
+}
+
+function render(rows){
+  if(!rows.length){el('results').innerHTML='<p>No properties matched. Try a larger distance '+
+    'or a smaller minimum land size.</p>';return;}
+  const money=r=>r.price?('$'+Math.round(r.price).toLocaleString()):(r.display_price||'Contact agent');
+  let h='<div class="scroll"><table><thead><tr><th>#</th><th>Price</th><th class="num">Land (m²)</th>'+
+    '<th class="num">Distance to line</th><th class="num">Neighbours</th><th>Type</th>'+
+    '<th>Address</th><th></th></tr></thead><tbody>';
+  rows.forEach((r,i)=>{
+    const close=r.dist<=100?'close':'';
+    h+=`<tr><td>${i+1}</td><td><b>${money(r)}</b></td>`+
+       `<td class="num">${Math.round(r.land).toLocaleString()}</td>`+
+       `<td class="num ${close}">${Math.round(r.dist)} m</td>`+
+       `<td class="num">${r.neighbours===null?'—':r.neighbours}</td>`+
+       `<td><span class="tag">${r.type||''}</span></td>`+
+       `<td>${r.address||''}${r.suburb?', '+r.suburb:''}</td>`+
+       `<td><a href="${r.url}" target="_blank" rel="noopener">View ↗</a></td></tr>`;
+  });
+  el('results').innerHTML=h+'</tbody></table></div>';
+}
+</script>
+</body>
+</html>

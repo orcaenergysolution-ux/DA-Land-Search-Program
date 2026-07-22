@@ -1,0 +1,40 @@
+# ---- SECRETS: never commit these -------------------------------------
+data/apify_token.txt
+.streamlit/secrets.toml
+*.env
+
+# ---- large source data the web app does not need ----------------------
+# (these stay on your computer - this only keeps them out of GitHub)
+data/inputs/
+scripts/*.pdf
+scripts/*.html
+data/intermediate/transmission_lines.slim.geojson
+
+__pycache__/
+*.pyc
+.firecrawl/
+.claude/
+
+# Intermediate data is reproducible from inputs + scripts
+data/intermediate/vision_pngs/
+data/intermediate/vision_tiles/
+
+# Generated output / scraped data / caches
+outputs/
+data/intermediate/apify_raw_*.json
+data/intermediate/reverse_geocode_cache.json
+data/intermediate/town_geocode_cache.json
+
+# Optional: comment out if you want generated outputs tracked
+# outputs/nem_map.html
+# outputs/assets/
+
+# Optional: keep cache for fast reruns
+# data/intermediate/geocode_cache.json
+
+# Personal working files
+outputs/projects_all_with note.xlsx
+
+.DS_Store
+Thumbs.db
+desktop.ini

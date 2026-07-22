@@ -1,0 +1,198 @@
+Anderson:VIC
+Ararat:VIC
+Arthurs Seat:VIC
+Ballarat Central:VIC
+Bandiana:VIC
+Bangholme:VIC
+Baranduda:VIC
+Baringhup:VIC
+Beaufort:VIC
+Beaumaris:VIC
+Belgrave:VIC
+Benalla:VIC
+Benalla West:VIC
+Berwick:VIC
+Bessiebelle:VIC
+Beveridge:VIC
+Birregurra:VIC
+Black Hill:VIC
+Boolarra:VIC
+Breakwater:VIC
+Bright:VIC
+Bruthen:VIC
+Bulla:VIC
+Buln Buln:VIC
+Burrumbeet:VIC
+Bylands:VIC
+Caldermeade:VIC
+Campbellfield:VIC
+Cardross:VIC
+Carisbrook:VIC
+Carwarp:VIC
+Chatsworth:VIC
+Club Terrace:VIC
+Cobden:VIC
+Codrington:VIC
+Colac:VIC
+Colignan:VIC
+Congupna:VIC
+Cowes:VIC
+Cranbourne South:VIC
+Cranbourne West:VIC
+Cudgee:VIC
+Curlewis:VIC
+Dallas:VIC
+Dalyston:VIC
+Diggers Rest:VIC
+Dimboola:VIC
+Dooen:VIC
+Doreen:VIC
+Douglas:VIC
+Dromana:VIC
+Dunnstown:VIC
+Eaglemont:VIC
+Echuca:VIC
+Elliminyt:VIC
+Endeavour Hills:VIC
+Eynesbury:VIC
+Fingal:VIC
+Foster:VIC
+Frankston South:VIC
+Garvoc:VIC
+Glen Iris:VIC
+Glengarry:VIC
+Glenrowan:VIC
+Golden Square:VIC
+Great Western:VIC
+Gruyere:VIC
+Hamilton:VIC
+Hastings:VIC
+Hattah:VIC
+Heatherton:VIC
+Hernes Oak:VIC
+Hexham:VIC
+Inglewood:VIC
+Inverloch:VIC
+Iraak:VIC
+Irymple:VIC
+Kangaroo Flat:VIC
+Katamatite:VIC
+Keilor East:VIC
+Kerang:VIC
+Kinglake:VIC
+Kinglake Central:VIC
+Koroit:VIC
+Kyabram:VIC
+Lake Boga:VIC
+Lang Lang:VIC
+Langwarrin:VIC
+Larpent:VIC
+Laverton North:VIC
+Leongatha:VIC
+Lillico:VIC
+Lilydale:VIC
+Longford:VIC
+Macedon:VIC
+Maffra:VIC
+Maiden Gully:VIC
+Mansfield:VIC
+Marong:VIC
+McCrae:VIC
+Melton:VIC
+Merrijig:VIC
+Mickleham:VIC
+Milawa:VIC
+Mill Park:VIC
+Mirboo North:VIC
+Molesworth:VIC
+Moolap:VIC
+Mooroopna North:VIC
+Morwell:VIC
+Mount Beauty:VIC
+Mount Cottrell:VIC
+Mount Egerton:VIC
+Mount Moriac:VIC
+Myrtleford:VIC
+Nangiloc:VIC
+Nar Nar Goon North:VIC
+Narracan:VIC
+Narrawong:VIC
+Narre Warren North:VIC
+Newhaven:VIC
+Newmerella:VIC
+Newstead:VIC
+Newtown:VIC
+Nhill:VIC
+Norlane:VIC
+North Wonthaggi:VIC
+Nowa Nowa:VIC
+Orbost:VIC
+Ouyen:VIC
+Pakenham:VIC
+Pakenham South:VIC
+Panmure:VIC
+Parkville:VIC
+Parwan:VIC
+Pearcedale:VIC
+Pirron Yallock:VIC
+Plumpton:VIC
+Pomborneit North:VIC
+Port Fairy:VIC
+Port Welshpool:VIC
+Prahran:VIC
+Purnim:VIC
+Red Cliffs:VIC
+Red Hill:VIC
+Ringwood:VIC
+Robin Hood:VIC
+Robinvale:VIC
+Rubicon:VIC
+Sale:VIC
+Seymour:VIC
+Shepparton:VIC
+Shepparton North:VIC
+South Morang:VIC
+St Helens:VIC
+Stawell:VIC
+Stonyford:VIC
+Strathewen:VIC
+Sunbury:VIC
+Swan Hill:VIC
+Swanpool:VIC
+Tallygaroopna:VIC
+Tatura:VIC
+Templestowe:VIC
+Tongala:VIC
+Toolern Vale:VIC
+Toolondo:VIC
+Toongabbie:VIC
+Toora:VIC
+Traralgon:VIC
+Trawalla:VIC
+Truganina:VIC
+Tyabb:VIC
+Tynong North:VIC
+Tyrendarra:VIC
+Wallan:VIC
+Wangaratta:VIC
+Wangoom:VIC
+Wantirna:VIC
+Wantirna South:VIC
+Warncoort:VIC
+Warrenheip:VIC
+Warrnambool:VIC
+Waubra:VIC
+Waurn Ponds:VIC
+Wedderburn:VIC
+Wemen:VIC
+Wendouree:VIC
+Wesley Hill:VIC
+West Wodonga:VIC
+Westbury:VIC
+Winchelsea:VIC
+Won Wron:VIC
+Wonga Park:VIC
+Woodend:VIC
+Woodstock:VIC
+Wunghnu:VIC
+Yarram:VIC

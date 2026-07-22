@@ -1,0 +1,45 @@
+{
+  "type": "FeatureCollection",
+  "_instructions": [
+    "Add missing transmission lines here as GeoJSON LineString features.",
+    "Each feature needs:",
+    "  coordinates: array of [longitude, latitude] pairs",
+    "  properties.voltage_kv: voltage as a number (e.g. 330, 220, 132, 66)",
+    "  properties.name: short line name (optional)",
+    "  properties.state: state code e.g. NSW, VIC, QLD, SA, TAS (optional)",
+    "  properties.notes: any extra notes you want shown in the tooltip (optional)",
+    "",
+    "After editing this file, run:  python src/build_leaflet.py",
+    "Lines appear on the map as dashed overlays when 'Manual transmission lines' is ticked.",
+    "",
+    "Example feature (remove the leading // to activate):",
+    "// {",
+    "//   \"type\": \"Feature\",",
+    "//   \"geometry\": {",
+    "//     \"type\": \"LineString\",",
+    "//     \"coordinates\": [[149.12, -35.31], [149.55, -35.60], [149.90, -35.92]]",
+    "//   },",
+    "//   \"properties\": {",
+    "//     \"voltage_kv\": 330,",
+    "//     \"name\": \"Canberra – Bungendore\",",
+    "//     \"state\": \"NSW\",",
+    "//     \"notes\": \"Missing from OSM as at May 2026\"",
+    "//   }",
+    "// }"
+  ],
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[145.15, -37.85], [145.25, -37.90], [145.35, -37.95]]
+      },
+      "properties": {
+        "voltage_kv": 220,
+        "name": "Example Line VIC",
+        "state": "VIC",
+        "notes": "This is an example line in Victoria."
+      }
+    }
+  ]
+}
