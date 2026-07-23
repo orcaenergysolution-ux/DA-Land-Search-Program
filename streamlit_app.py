@@ -18,8 +18,14 @@ import streamlit as st
 
 ROOT = Path(__file__).parent
 sys.path.insert(0, str(ROOT / "src"))
+import importlib                  # noqa: E402
 import find_properties as fp      # noqa: E402
 import find_parcels as fpar       # noqa: E402
+# Streamlit Cloud can re-run this script after a deploy while keeping the
+# previously imported submodules cached in memory (old code). Reload them so a
+# new deploy's changes always take effect - fp first, since fpar imports it.
+fp = importlib.reload(fp)
+fpar = importlib.reload(fpar)
 
 st.set_page_config(page_title="Transmission Line Property Finder",
                    page_icon="⚡", layout="wide")
