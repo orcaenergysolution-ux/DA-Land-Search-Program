@@ -33,6 +33,28 @@ st.set_page_config(page_title="Transmission Line Property Finder",
 USD_PER_RESULT = 0.0047
 VOLTAGES = [66, 132, 220, 275, 330, 500]
 
+# Bump WHATS_NEW_VERSION whenever you add a new dated entry, so returning
+# visitors see the pop-up once more. Newest entry first.
+WHATS_NEW_VERSION = "2026-07"
+WHATS_NEW = [
+    ("Nationwide free parcel search",
+     "Off-market land search now covers VIC, NSW, QLD, TAS and ACT government "
+     "cadastres — not just Victoria. (WA/SA/NT keep their data behind "
+     "registration, so use the listings search there.)"),
+    ("Search around towns",
+     "Type one or more towns and a radius to search just that area — far faster "
+     "than scanning a whole state."),
+    ("Stop at a result limit",
+     "Choose how many results to find (default 100); the search stops as soon as "
+     "it reaches that number."),
+    ("Paid listings search",
+     "Optional 'Properties advertised for sale' mode finds on-market land Australia-"
+     "wide via Domain, ordered cheapest first."),
+    ("Clearer interstate handling",
+     "Entering a town outside the selected state now gives a clear message instead "
+     "of an empty result."),
+]
+
 
 def get_token() -> str:
     """Apify token from Streamlit secrets (never committed to git)."""
@@ -40,6 +62,25 @@ def get_token() -> str:
         return st.secrets.get("APIFY_TOKEN", "")
     except Exception:
         return ""
+
+
+def get_passcode() -> str:
+    """Optional passcode that gates the PAID listings search (protects credit)."""
+    try:
+        return st.secrets.get("PAID_PASSCODE", "")
+    except Exception:
+        return ""
+
+
+@st.dialog("🆕 What's new")
+def show_whats_new():
+    st.caption("Recent updates to the Property Finder")
+    for title, body in WHATS_NEW:
+        st.markdown(f"**{title}**  \n{body}")
+        st.divider()
+    if st.button("Got it", type="primary", use_container_width=True):
+        st.session_state["whats_new_seen"] = WHATS_NEW_VERSION
+        st.rerun()
 
 
 @st.cache_resource(show_spinner="Loading power line data...")
@@ -79,7 +120,13 @@ def rows_to_csv(rows, mode) -> str:
 st.title("⚡ Transmission Line Property Finder")
 st.caption("Finds land close to high-voltage power lines.")
 
+# Show the "What's new" pop-up once per session (until the visitor closes it).
+if st.session_state.get("whats_new_seen") != WHATS_NEW_VERSION:
+    show_whats_new()
+
 sb = st.sidebar
+if sb.button("🆕 What's new", use_container_width=True):
+    show_whats_new()
 sb.header("Search settings")
 
 token = get_token()
@@ -156,9 +203,26 @@ else:
     max_listings = sb.selectbox("Maximum listings to fetch (controls cost)",
                                 [100, 200, 400, 800], index=1)
     towns_raw = sb.text_area("Towns (one per line)", "Gisborne:VIC\nKilmore:VIC")
-    st.sidebar.info(f"Estimated cost: up to **${max_listings*USD_PER_RESULT:.2f}**")
+    est_cost = max_listings * USD_PER_RESULT
+    st.sidebar.info(f"Estimated cost: up to **${est_cost:.2f}**")
+    confirm_paid = sb.checkbox(f"I understand this may spend up to ${est_cost:.2f}")
 
-run = sb.button("🔎 Search", type="primary", use_container_width=True)
+# The paid search can spend real credit, and this app is public. If a passcode
+# is configured, require it before a paid run; the free parcel search stays open.
+passcode_ok = True
+if source == "scrape":
+    required = get_passcode()
+    if required:
+        entered = sb.text_input("Access code (for paid search)", type="password")
+        passcode_ok = (entered == required)
+        if entered and not passcode_ok:
+            sb.error("Incorrect access code.")
+    sb.warning("This search spends Apify credit. It only runs when you press "
+               "Search and confirm below.")
+
+paid_blocked = source == "scrape" and (not passcode_ok or not confirm_paid)
+run = sb.button("🔎 Search", type="primary", use_container_width=True,
+                disabled=paid_blocked)
 
 
 # -------------------------------------------------------------------- run
