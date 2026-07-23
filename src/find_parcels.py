@@ -1,11 +1,17 @@
 """Find LAND PARCELS near transmission lines - on-market or not.
 
-Unlike find_properties.py (which only sees advertised listings), this scans the
-Vicmap cadastre: every land parcel in Victoria, whether or not it is for sale.
+Unlike find_properties.py (which only sees advertised listings), this scans
+government cadastres: every land parcel, whether or not it is for sale.
 Free - no Apify credit, no API key.
 
-Source: Victorian Government open data WFS
-  https://opendata.maps.vic.gov.au/geoserver/wfs   layer open-data-platform:v_parcel_mp
+Coverage (free, keyless government services):
+  VIC - Vicmap GeoServer WFS
+  NSW - SIX Maps ArcGIS (NSW_Cadastre, Lot layer)
+  QLD - QSpatial ArcGIS (Land Parcel Property Framework)
+  TAS - theLIST ArcGIS (Cadastral Parcels)
+  ACT - ACTmapi ArcGIS (Blocks)
+WA, SA and NT are not covered: their cadastres require registration (Landgate
+SLIP etc.), so there is no free keyless endpoint. Use the listings search there.
 
 How it works:
   1. Load the target-voltage lines from transmission_lines.geojson.
@@ -49,6 +55,68 @@ WFS = "https://opendata.maps.vic.gov.au/geoserver/wfs"
 LAYER = "open-data-platform:v_parcel_mp"
 SERVER_CAP = 5000          # GeoServer max features per response
 UA = {"User-Agent": "nem-parcel-finder/0.1"}
+
+# Free, keyless government cadastre services, one per jurisdiction. VIC is a
+# GeoServer WFS; the rest are Esri ArcGIS REST layers queried the same way.
+# WA/SA/NT are omitted: their cadastres sit behind registration (Landgate SLIP
+# etc.), so there is no free keyless endpoint to use.
+ARCGIS = {
+    "NSW": {
+        "url": "https://maps.six.nsw.gov.au/arcgis/rest/services/public/"
+               "NSW_Cadastre/MapServer",
+        "layer": 9, "cap": 1000, "id": "objectid",
+        "fields": "objectid,lotidstring,lotnumber,sectionnumber,plannumber",
+        "ident": lambda p: {"spi": p.get("lotidstring") or "",
+                            "lot": str(p.get("lotnumber") or ""),
+                            "plan": p.get("plannumber") or "", "lga": ""},
+    },
+    "QLD": {
+        "url": "https://spatial-gis.information.qld.gov.au/arcgis/rest/services/"
+               "PlanningCadastre/LandParcelPropertyFramework/MapServer",
+        "layer": 4, "cap": 1000, "id": "objectid",
+        "fields": "objectid,lot,plan,lotplan,locality",
+        "ident": lambda p: {"spi": p.get("lotplan") or "",
+                            "lot": str(p.get("lot") or ""),
+                            "plan": p.get("plan") or "", "lga": p.get("locality") or ""},
+    },
+    "TAS": {
+        "url": "https://services.thelist.tas.gov.au/arcgis/rest/services/Public/"
+               "CadastreAndAdministrative/MapServer",
+        "layer": 38, "cap": 1000, "id": "OBJECTID",
+        "fields": "OBJECTID,PID,CID",
+        "ident": lambda p: {"spi": str(p.get("PID") or ""),
+                            "lot": "", "plan": str(p.get("CID") or ""), "lga": ""},
+    },
+    "ACT": {
+        "url": "https://services1.arcgis.com/E5n4f1VY84i0xSjy/arcgis/rest/services/"
+               "ACTGOV_BLOCKS/FeatureServer",
+        "layer": 0, "cap": 2000, "id": "OBJECTID",
+        "fields": "OBJECTID,BLOCK_KEY,BLOCK_NUMBER,SECTION_NUMBER,DISTRICT_NAME",
+        "ident": lambda p: {"spi": str(p.get("BLOCK_KEY") or ""),
+                            "lot": str(p.get("BLOCK_NUMBER") or ""),
+                            "plan": (f"Sec {p['SECTION_NUMBER']}"
+                                     if p.get("SECTION_NUMBER") else ""),
+                            "lga": p.get("DISTRICT_NAME") or ""},
+    },
+}
+SUPPORTED = ["VIC"] + sorted(ARCGIS)   # states with a free parcel source
+
+
+def parcel_ident(state, props):
+    """Normalised {spi, lot, plan, lga} identifiers for a parcel."""
+    if state == "VIC":
+        return {"spi": props.get("parcel_spi", ""),
+                "lot": props.get("parcel_lot_number", ""),
+                "plan": props.get("parcel_plan_number", ""),
+                "lga": props.get("parcel_lga_code", "")}
+    return ARCGIS[state]["ident"](props)
+
+
+def parcel_id(state, props):
+    """A stable unique id for de-duplication."""
+    if state == "VIC":
+        return props.get("parcel_pfi") or props.get("parcel_ufi")
+    return props.get(ARCGIS[state]["id"])
 
 
 # ------------------------------------------------------------------ geometry
@@ -110,38 +178,98 @@ def centroid(geom):
     return (ys / n, xs / n) if n else (None, None)
 
 
-# ----------------------------------------------------------------------- wfs
-def wfs_tile(w, s, e, n, retries=2):
-    """Parcels intersecting a bbox. Returns (features, truncated_total_or_None)."""
+# --------------------------------------------------------------- cadastre fetch
+import ssl                                              # noqa: E402
+_SSL = ssl.create_default_context()
+
+
+def _get_json(url, retries=2, timeout=45):
+    """GET JSON, tolerating the odd government TLS quirk on a fallback attempt."""
+    for attempt in range(retries):
+        try:
+            with urlopen(Request(url, headers=UA), timeout=timeout, context=_SSL) as r:
+                return json.loads(r.read().decode(errors="ignore"))
+        except (HTTPError, URLError, TimeoutError, json.JSONDecodeError) as ex:
+            if attempt == retries - 1:
+                raise
+            time.sleep(2 * (attempt + 1))
+            if isinstance(ex, URLError) and isinstance(
+                    getattr(ex, "reason", None), ssl.SSLError):
+                globals()["_SSL"] = ssl._create_unverified_context()
+
+
+def wfs_tile(w, s, e, n):
+    """VIC (GeoServer WFS). Returns (features, truncated_bool)."""
     url = (f"{WFS}?service=WFS&version=2.0.0&request=GetFeature&typeNames={LAYER}"
            f"&outputFormat=application/json&srsName=EPSG:4326"
            f"&bbox={w},{s},{e},{n},EPSG:4326&count={SERVER_CAP}")
-    for attempt in range(retries):
-        try:
-            with urlopen(Request(url, headers=UA), timeout=60) as r:
-                d = json.loads(r.read().decode())
-            matched = d.get("numberMatched")
-            feats = d.get("features", [])
-            if isinstance(matched, int) and matched > len(feats):
-                return feats, matched
-            return feats, None
-        except (HTTPError, URLError, TimeoutError, json.JSONDecodeError) as ex:
-            if attempt == retries - 1:
-                print(f"    tile {w:.3f},{s:.3f} failed: {ex}", file=sys.stderr)
-                return [], None
-            time.sleep(3 * (attempt + 1))
-    return [], None
+    try:
+        d = _get_json(url)
+    except Exception as ex:
+        print(f"    VIC tile {w:.3f},{s:.3f} failed: {ex}", file=sys.stderr)
+        return [], False
+    feats = d.get("features", [])
+    matched = d.get("numberMatched")
+    return feats, isinstance(matched, int) and matched > len(feats)
 
 
-def fetch_recursive(w, s, e, n, depth=0, max_depth=4):
+def arcgis_tile(state, w, s, e, n):
+    """NSW/QLD/TAS/ACT (Esri ArcGIS). Returns (features, truncated_bool)."""
+    cfg = ARCGIS[state]
+    url = (f"{cfg['url']}/{cfg['layer']}/query?"
+           f"geometry={w},{s},{e},{n}&geometryType=esriGeometryEnvelope"
+           f"&inSR=4326&outSR=4326&spatialRel=esriSpatialRelIntersects"
+           f"&where=1%3D1&outFields={cfg.get('fields', '*')}&returnGeometry=true"
+           f"&f=geojson&resultRecordCount={cfg['cap']}")
+    try:
+        d = _get_json(url)
+    except Exception as ex:
+        print(f"    {state} tile {w:.3f},{s:.3f} failed: {ex}", file=sys.stderr)
+        return [], False
+    feats = d.get("features", [])
+    truncated = bool(d.get("exceededTransferLimit")) or len(feats) >= cfg["cap"]
+    return feats, truncated
+
+
+def fetch_tile(state, w, s, e, n):
+    return wfs_tile(w, s, e, n) if state == "VIC" else arcgis_tile(state, w, s, e, n)
+
+
+def cadastre_has_data(state, lat, lon, half=0.006):
+    """Is there any parcel near this point? Returns True / False / None (unknown).
+    Uses a count-only query (no geometry) so it stays fast even in dense cities
+    and reliable on slow servers - used to check a town is in the right state."""
+    w, s, e, n = lon - half, lat - half, lon + half, lat + half
+    try:
+        if state == "VIC":
+            url = (f"{WFS}?service=WFS&version=2.0.0&request=GetFeature"
+                   f"&typeNames={LAYER}&resultType=hits"
+                   f"&bbox={w},{s},{e},{n},EPSG:4326")
+            with urlopen(Request(url, headers=UA), timeout=30, context=_SSL) as r:
+                body = r.read().decode(errors="ignore")
+            import re
+            m = re.search(r'numberMatched="(\d+)"', body)
+            return (int(m.group(1)) > 0) if m else None
+        cfg = ARCGIS[state]
+        url = (f"{cfg['url']}/{cfg['layer']}/query?geometry={w},{s},{e},{n}"
+               f"&geometryType=esriGeometryEnvelope&inSR=4326"
+               f"&spatialRel=esriSpatialRelIntersects&where=1%3D1"
+               f"&returnCountOnly=true&f=json")
+        d = _get_json(url, retries=1, timeout=15)
+        return d.get("count", 0) > 0
+    except Exception:
+        return None   # couldn't tell - caller should not exclude on this alone
+
+
+def fetch_recursive(state, w, s, e, n, depth=0, max_depth=4):
     """Fetch a tile, splitting into quarters when the server truncates."""
-    feats, truncated = wfs_tile(w, s, e, n)
+    feats, truncated = fetch_tile(state, w, s, e, n)
     if truncated and depth < max_depth:
         mx, my = (w + e) / 2, (s + n) / 2
         out = []
         for (a, b, c, d_) in ((w, s, mx, my), (mx, s, e, my),
                               (w, my, mx, n), (mx, my, e, n)):
-            out.extend(fetch_recursive(a, b, c, d_, depth + 1, max_depth))
+            out.extend(fetch_recursive(state, a, b, c, d_, depth + 1, max_depth))
         return out
     return feats
 
@@ -230,7 +358,8 @@ def write_reports(rows, args, stamp):
     lines = [
         f"# Land parcels near {volt} kV lines - {args.state}",
         "",
-        f"_Generated {stamp} UTC from the Vicmap cadastre (free open data)._",
+        f"_Generated {stamp} UTC from the {args.state} government cadastre "
+        f"(free open data)._",
         "",
         f"Criteria: area >= {args.min_land:,.0f} m2, boundary within "
         f"{args.max_distance:.0f} m of a {volt} kV line"
@@ -279,11 +408,12 @@ def scan(args, progress=None, segs=None, grid=None):
         else:
             print(m, file=sys.stderr)
 
-    if args.state != "VIC":
+    if args.state not in SUPPORTED:
         raise RuntimeError(
-            f"The free land-parcel search only covers Victoria (Vicmap open data), "
-            f"but {args.state} is selected. Switch the state to VIC, or use the "
-            f"'Properties advertised for sale' option for {args.state}.")
+            f"The free land-parcel search covers {', '.join(SUPPORTED)}, "
+            f"but {args.state} is selected. WA, SA and NT keep their cadastre "
+            f"behind registration, so use the 'Properties advertised for sale' "
+            f"option for those states.")
 
     voltages = args.voltages
     bbox = fp.STATE_BBOX[args.state]
@@ -320,24 +450,22 @@ def scan(args, progress=None, segs=None, grid=None):
         if not pts:
             raise RuntimeError("None of those towns could be located - check the spelling.")
 
-        # The parcel data is the Victorian cadastre only. Victoria's bounding box
-        # overhangs into NSW (e.g. Wagga Wagga sits inside it), so a coordinate
-        # test isn't enough - probe the actual cadastre at each town instead.
+        # A state's bounding box can overhang a neighbour (Victoria's reaches into
+        # NSW, catching Wagga Wagga), so a coordinate test isn't enough - ask the
+        # selected state's cadastre whether it has parcels there. Only a definite
+        # "no" excludes a town; an unreachable server does not.
         inside, outside = [], []
         for p in pts:
-            feats, _ = wfs_tile(p["lon"] - 0.02, p["lat"] - 0.02,
-                                p["lon"] + 0.02, p["lat"] + 0.02)
-            (inside if feats else outside).append(p)
+            has = cadastre_has_data(args.state, p["lat"], p["lon"])
+            (outside if has is False else inside).append(p)
         if outside:
             say(f"  NOTE: {', '.join(q['name'] for q in outside)} is not in the "
-                f"Victorian cadastre (the free parcel data covers Victoria only) "
-                f"- skipped.")
+                f"{args.state} cadastre - skipped. (Does the state selector match?)")
         pts = inside
         if not pts:
             raise RuntimeError(
-                "Those towns are outside Victoria. The free land-parcel search only "
-                "covers Victoria (Vicmap). For interstate towns such as Wagga Wagga, "
-                "use the 'Properties advertised for sale' option instead.")
+                f"Those towns are not in the {args.state} cadastre. Check the state "
+                f"selector matches the towns, or use 'Properties advertised for sale'.")
         before = len(tiles)
         tiles = tiles_near_towns(tiles, args.tile, pts, args.town_radius * 1000)
         say(f"  {len(tiles)} tiles within {args.town_radius:.0f} km of those towns "
@@ -359,12 +487,12 @@ def scan(args, progress=None, segs=None, grid=None):
     for i, (tx, ty) in enumerate(tiles, 1):
         w, s = tx * args.tile, ty * args.tile
         t0 = time.time()
-        feats = fetch_recursive(w, s, w + args.tile, s + args.tile)
+        feats = fetch_recursive(args.state, w, s, w + args.tile, s + args.tile)
         found_before = len(survivors)
         for ft in feats:
             p = ft.get("properties", {}) or {}
-            pfi = p.get("parcel_pfi") or p.get("parcel_ufi")
-            if pfi in seen:
+            pid = parcel_id(args.state, p)
+            if pid is not None and pid in seen:
                 continue
             geom = ft.get("geometry")
             if not geom:
@@ -381,14 +509,14 @@ def scan(args, progress=None, segs=None, grid=None):
                         break
             if best is None:
                 continue
-            seen.add(pfi)
+            if pid is not None:
+                seen.add(pid)
             clat, clon = centroid(geom)
+            ident = parcel_ident(args.state, p)
             rec = {
-                "pfi": pfi, "area": area, "dist": best[0],
+                "pfi": pid, "area": area, "dist": best[0],
                 "line_v": (best[1] or {}).get("voltage_kv", ""),
-                "spi": p.get("parcel_spi", ""), "lot": p.get("parcel_lot_number", ""),
-                "plan": p.get("parcel_plan_number", ""), "lga": p.get("parcel_lga_code", ""),
-                "lat": clat, "lon": clon, "neighbours": None,
+                "lat": clat, "lon": clon, "neighbours": None, **ident,
             }
             survivors.append(rec)
             if target and len(survivors) >= target:
@@ -447,8 +575,8 @@ def scan(args, progress=None, segs=None, grid=None):
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--state", default="VIC", choices=sorted(fp.STATE_BBOX),
-                    help="Only VIC has cadastre wired up so far.")
+    ap.add_argument("--state", default="VIC", choices=SUPPORTED,
+                    help=f"Free cadastre available for: {', '.join(SUPPORTED)}.")
     ap.add_argument("--voltages", default="66")
     ap.add_argument("--voltage-tol", type=float, default=0.5)
     ap.add_argument("--min-land", type=float, default=10000.0)
@@ -473,9 +601,6 @@ def main():
     args = ap.parse_args()
     args.voltages = [float(v) for v in args.voltages.split(",") if v.strip()]
     args.towns = [t.strip() for t in args.towns.split(",") if t.strip()]
-
-    if args.state != "VIC":
-        sys.exit("Cadastral scan currently supports VIC only (Vicmap open data).")
 
     stamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M")
     rows = scan(args)

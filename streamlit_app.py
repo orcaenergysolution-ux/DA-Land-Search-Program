@@ -88,11 +88,15 @@ if not token:
     sb.caption("Listings search is disabled because no Apify key is configured.")
 
 if source == "parcels":
-    state = "VIC"
-    sb.selectbox("State", ["VIC"], index=0,
-                 help="The free land-parcel search covers Victoria only.")
-    sb.caption("🟢 Land parcels: **Victoria only** (free Vicmap data). "
-               "For other states, use the paid listings option.")
+    state = sb.selectbox("State", fpar.SUPPORTED,
+                         index=fpar.SUPPORTED.index("VIC"),
+                         help="Free government cadastre. WA, SA and NT keep theirs "
+                              "behind registration, so they are not listed.")
+    sb.caption("🟢 Free land parcels available for: **"
+               + ", ".join(fpar.SUPPORTED) + "**. "
+               "For WA / SA / NT, use the paid listings option.")
+    if state == "TAS":
+        sb.caption("ℹ️ Tasmania has no 66 kV lines — choose 110 kV or 220 kV above.")
 else:
     state = sb.selectbox("State", sorted(fp.STATE_BBOX),
                          index=sorted(fp.STATE_BBOX).index("VIC"))
@@ -230,15 +234,16 @@ mode = st.session_state.get("mode", "parcels")
 
 if rows is None:
     st.info("Set your criteria in the sidebar, then press **Search**.\n\n"
-            "**All land parcels** searches every block of land in the Victorian "
-            "cadastre — including land that is *not* for sale. It is free.")
+            "**All land parcels** searches every block of land in the government "
+            "cadastre — including land that is *not* for sale — for "
+            + ", ".join(fpar.SUPPORTED) + ". It is free.")
 elif not rows:
     st.warning("Nothing matched. Try a larger distance, a smaller minimum land "
                "size, or a bigger scan area.")
 else:
     if mode == "parcels":
         st.success(f"Found **{len(rows)}** land parcels. "
-                   "Free — Victorian open data, no credit used.")
+                   f"Free — {state} government open data, no credit used.")
         table = [{
             "#": i,
             "Area (m²)": round(r["area"]),
