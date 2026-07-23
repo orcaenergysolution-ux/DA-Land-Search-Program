@@ -171,11 +171,13 @@ GEOCACHE = STATE_DIR / "town_geocode_cache.json"
 
 
 def geocode_town(name, state, cache, say):
-    """Town centre via free OSM Nominatim search. Cached; 1 req/sec."""
+    """Town centre via free OSM Nominatim search. Cached; 1 req/sec.
+    `state` is optional - pass "" to geocode the town without forcing a state."""
     key = f"{name}|{state}"
     if key in cache:
         return cache[key]
-    q = urlencode({"q": f"{name}, {state}, Australia", "format": "json", "limit": 1})
+    where = f"{name}, {state}, Australia" if state else f"{name}, Australia"
+    q = urlencode({"q": where, "format": "json", "limit": 1})
     pt = None
     try:
         with urlopen(Request(f"https://nominatim.openstreetmap.org/search?{q}",
@@ -277,6 +279,12 @@ def scan(args, progress=None, segs=None, grid=None):
         else:
             print(m, file=sys.stderr)
 
+    if args.state != "VIC":
+        raise RuntimeError(
+            f"The free land-parcel search only covers Victoria (Vicmap open data), "
+            f"but {args.state} is selected. Switch the state to VIC, or use the "
+            f"'Properties advertised for sale' option for {args.state}.")
+
     voltages = args.voltages
     bbox = fp.STATE_BBOX[args.state]
     if segs is None or grid is None:
@@ -295,16 +303,41 @@ def scan(args, progress=None, segs=None, grid=None):
         pts = []
         say(f"Locating {len(towns)} town(s)...")
         for entry in towns:
-            nm, st = (entry.split(":", 1) + [args.state])[:2] if ":" in entry \
-                else (entry, args.state)
+            # Only force a state when the user gave one ("Town:STATE"). Otherwise
+            # geocode the town as-is: forcing "VIC" onto an interstate town like
+            # "Wagga Wagga" makes Nominatim invent a bogus Victorian match.
+            if ":" in entry:
+                nm, st = entry.split(":", 1)
+            else:
+                nm, st = entry, ""
             p = geocode_town(nm.strip(), st.strip(), cache, say)
             if p:
+                p["name"] = nm.strip()
                 pts.append(p)
                 say(f"  {nm.strip()} -> {p['lat']:.3f}, {p['lon']:.3f}")
         GEOCACHE.parent.mkdir(parents=True, exist_ok=True)
         GEOCACHE.write_text(json.dumps(cache), encoding="utf-8")
         if not pts:
             raise RuntimeError("None of those towns could be located - check the spelling.")
+
+        # The parcel data is the Victorian cadastre only. Victoria's bounding box
+        # overhangs into NSW (e.g. Wagga Wagga sits inside it), so a coordinate
+        # test isn't enough - probe the actual cadastre at each town instead.
+        inside, outside = [], []
+        for p in pts:
+            feats, _ = wfs_tile(p["lon"] - 0.02, p["lat"] - 0.02,
+                                p["lon"] + 0.02, p["lat"] + 0.02)
+            (inside if feats else outside).append(p)
+        if outside:
+            say(f"  NOTE: {', '.join(q['name'] for q in outside)} is not in the "
+                f"Victorian cadastre (the free parcel data covers Victoria only) "
+                f"- skipped.")
+        pts = inside
+        if not pts:
+            raise RuntimeError(
+                "Those towns are outside Victoria. The free land-parcel search only "
+                "covers Victoria (Vicmap). For interstate towns such as Wagga Wagga, "
+                "use the 'Properties advertised for sale' option instead.")
         before = len(tiles)
         tiles = tiles_near_towns(tiles, args.tile, pts, args.town_radius * 1000)
         say(f"  {len(tiles)} tiles within {args.town_radius:.0f} km of those towns "

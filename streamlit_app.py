@@ -87,8 +87,15 @@ source = sb.radio("What to search", options,
 if not token:
     sb.caption("Listings search is disabled because no Apify key is configured.")
 
-state = sb.selectbox("State", sorted(fp.STATE_BBOX),
-                     index=sorted(fp.STATE_BBOX).index("VIC"))
+if source == "parcels":
+    state = "VIC"
+    sb.selectbox("State", ["VIC"], index=0,
+                 help="The free land-parcel search covers Victoria only.")
+    sb.caption("🟢 Land parcels: **Victoria only** (free Vicmap data). "
+               "For other states, use the paid listings option.")
+else:
+    state = sb.selectbox("State", sorted(fp.STATE_BBOX),
+                         index=sorted(fp.STATE_BBOX).index("VIC"))
 volts = sb.multiselect("Power line voltage (kV)", VOLTAGES, default=[66])
 
 st.sidebar.divider()
